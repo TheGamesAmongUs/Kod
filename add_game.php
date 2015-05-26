@@ -34,6 +34,11 @@ require('site/search.php');
 <?php
 if($_SESSION['MOD']==1 or $_SESSION['ADMIN']==1){
 echo'jesteś adminem';
+} else {
+if($_SESSION['logged']) {
+
+echo 'Po dodaniu przez Ciebie gra zostanie poddana moderacji i po zaakceptowaniu przez moderatorów umieszczona w bazie gier';
+}
 }
 
 
