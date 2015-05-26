@@ -25,10 +25,12 @@ $kpp = 5;
 
 
 require('site/bhead.php');
-if($_REQUEST['id']==null){
 $user_id = $_SESSION['ID_GRACZ'];
+
+if($_REQUEST['id']==null){
+$article_id = 0;
 } else {
-$user_id = $_REQUEST['id'];
+$article_id = $_REQUEST['id'];
 }
 
 baza();
@@ -84,6 +86,9 @@ background-color: black;">
 $zapytanie = "Select AUTOR_ART_ID FROM ARTYKULY WHERE ID_ARTYKUL = '$article_id'";
 list($autor_id)=mysql_fetch_array (mysql_query($zapytanie));
 
+$zapytanie = "Select COVER FROM ARTYKULY WHERE ID_ARTYKUL = '$article_id'";
+list($cov)=mysql_fetch_array (mysql_query($zapytanie));
+
 
 if($akcept==0 and $_SESSION['MOD']!=1)
 {
@@ -95,7 +100,7 @@ echo '<div id="a1">';
 if($_SESSION['ID_GRACZ']==$autor_id or $_SESSION['MOD']==1 or $_SESSION['ADMIN']==1){
 echo '<h4 align="left"><a href="edit_game.php?id='.$article_id.'">Edytuj grę</a></h4>';
 }
-echo '<img width="150px" height="211" src="img/article/cov_'.$article_id.'.jpg"></img>
+echo '<img width="150px" height="211" src="img/article/'.$cov.'"></img>
   
 Wyświetleń: '.$wyswietlen.'<br>';
 
@@ -180,6 +185,8 @@ echo "</br></br><hr>";
 
 $ty = $_SESSION['ID_GRACZ'];
 $ocenka = $_POST['ocena'];
+$play_val = $_POST['zagraj'];
+
 $comtext = $_POST['comtext'];
 
  if(isset($_POST['ocena_s']))
@@ -203,6 +210,31 @@ $idzapytania = mysql_query($zapytanie);
 	}
 
 
+
+
+ if(isset($_POST['play_s']))
+     {
+
+            // sprawdzamy czy gra została już oznaczona jako chcę zagrać
+            $result = mysql_query("SELECT * FROM PLAY WHERE ID_GRACZ='$ty' AND ID_GRY='$game_id'");
+           
+             // jeśli nie
+            if(mysql_num_rows($result)==0){
+    $ins = @mysql_query("INSERT INTO PLAY SET ID_GRACZ='$ty', PLAY='$play_val', ID_GRY='$game_id'"); 
+					   } 
+//jeśli już oceniono, ocena zostaje zaktyalizowana
+else{
+
+$zapytanie = "UPDATE PLAY SET PLAY='$play_val' WHERE ID_GRACZ='$ty' AND ID_GRY='$game_id'";
+
+$idzapytania = mysql_query($zapytanie);
+
+}
+	}
+
+
+
+
 if($_SESSION['logged']) {
 
 if(isset($_POST['com_s'])){
@@ -224,6 +256,9 @@ else{
 
 $zapytanie = "Select OCENA_ART FROM OCENA_ART WHERE ID_GRACZ = '$ty' and ID_ART = '$article_id'";
 list($ocena_gracz)=mysql_fetch_array (mysql_query($zapytanie));
+
+$zapytanie = "Select PLAY FROM PLAY WHERE ID_GRACZ = '$ty' and ID_GRY = '$game_id'";
+list($play_gracz)=mysql_fetch_array (mysql_query($zapytanie));
 
 $zapytanie = "SELECT avg(OCENA_ART) FROM `OCENA_ART` WHERE ID_ART = '$article_id'";
 list($ocena)=mysql_fetch_array (mysql_query($zapytanie));
@@ -276,6 +311,9 @@ if($i==$ocena_gracz){
  echo "<option value='$i'>$i</option>";
 	}
 
+
+
+
 }
 
 
@@ -283,8 +321,50 @@ if($i==$ocena_gracz){
 echo '</select><br>
 <input type="submit" name="ocena_s" value="Oceń" ></input></form>';
 }
+
+
+$result = mysql_query("SELECT * FROM ULUBIONE WHERE ID_GRY='$game_id'AND ID_GRACZ='$user_id'") ;
+
+
+if(mysql_num_rows($result)!=0) {
+echo '<a href="fav.php?id='.$article_id.'">Lubisz tą grę</a>';
+} else {
+echo '<a href="fav.php?id='.$article_id.'">Nie lubisz tej gry</a>';
+}
+
 echo '</td>
   </tr>
+
+  <tr>';
+// Mozliwość głosowania jest dostępna dopiero po zalogowaniu się
+if($_SESSION['logged'] and $article_id!=null and $article_id!=0) {
+echo '
+    <td>Chcę zagrać: <form action="'.$site_adr.'" method="POST"><select name="zagraj">';
+
+for($i=0; $i<=3; $i++){
+if($i==$play_gracz){
+
+ echo "<option selected value='$i'>$i</option>";
+
+} else {
+
+ echo "<option value='$i'>$i</option>";
+	}
+
+
+
+
+}
+
+
+
+echo '</select><br>
+<input type="submit" name="play_s" value="Chcę zagrać" ></input></form>';
+}
+
+echo '</td>
+  </tr>
+
 
 </table>
 ';
@@ -304,9 +384,9 @@ echo "</br>";
 
 <comment>
 Komentarze (<?php echo $ile_kom; ?>)
-//sekcja z komentarzami
-<?php
 
+<?php
+//sekcja z komentarzami
 //formularz komentarzy, także dostępny dopiero dla zalogowaych
 
 if($_SESSION['logged'] and $article_id!=null and $article_id!=0) {
