@@ -55,7 +55,7 @@ list($avek2)=mysql_fetch_array (mysql_query($zapytanie));
 $zapytanie = "Select AVATAR FROM GRACZ WHERE ID_GRACZ = 82";
 list($avek3)=mysql_fetch_array (mysql_query($zapytanie));
 
-$zapytanie = "Select AVATAR FROM GRACZ WHERE ID_GRACZ = 0";
+$zapytanie = "Select AVATAR FROM GRACZ WHERE ID_GRACZ = 86";
 list($avek4)=mysql_fetch_array (mysql_query($zapytanie));
 
 $zapytanie = "Select AVATAR FROM GRACZ WHERE ID_GRACZ = 0";
@@ -65,6 +65,8 @@ $zapytanie = "Select AVATAR FROM GRACZ WHERE ID_GRACZ = 0";
 list($avek6)=mysql_fetch_array (mysql_query($zapytanie));
 
 //Wyświetlenie awatarów
+
+//wyświetlenie danych członków zespołu
 echo '<tr>
 <td width="200px" align="center"><div style="background-image: url(img/avatar/'.$avek1.'); background-repeat: no-repeat; background-size:100px, 100px;
 background-position: center; width:100px; height:100px; border-style: solid; border-width:1px; border-radius: 100px;"></div></td>
@@ -76,7 +78,7 @@ background-position: center; width:100px; height:100px; border-style: solid; bor
 background-position: center; width:100px; height:100px; border-style: solid; border-width:1px; border-radius: 100px;"></div></td>
 
 </tr>
-//wyświetlenie danych członków zespołu
+
 <tr>
 <td width="200px" align="center"><b>Kevin Ćwiek</b><br>Pomysłodawca proektu i kierownik zespołu</td>
 
@@ -87,13 +89,13 @@ background-position: center; width:100px; height:100px; border-style: solid; bor
 </tr>
 
 <tr>
-<td width="200px" align="center"><div style="background-image: url('.$avek4.'); background-repeat: no-repeat; background-size:100px, 100px;
+<td width="200px" align="center"><div style="background-image: url(img/avatar/'.$avek4.'); background-repeat: no-repeat; background-size:100px, 100px;
 background-position: center; width:100px; height:100px; border-style: solid; border-width:1px; border-radius: 100px;"></div></td>
 
-<td width="200px" align="center"><div style="background-image: url('.$avek5.'); background-repeat: no-repeat; background-size:100px, 100px;
+<td width="200px" align="center"><div style="background-image: url(img/avatar/'.$avek5.'); background-repeat: no-repeat; background-size:100px, 100px;
 background-position: center; width:100px; height:100px; border-style: solid; border-width:1px; border-radius: 100px;"></div></td>
 
-<td width="200px" align="center"><div style="background-image: url('.$avek6.'); background-repeat: no-repeat; background-size:100px, 100px;
+<td width="200px" align="center"><div style="background-image: url(img/avatar/'.$avek6.'); background-repeat: no-repeat; background-size:100px, 100px;
 background-position: center; width:100px; height:100px; border-style: solid; border-width:1px; border-radius: 100px;"></div></td>
 
 </tr>
