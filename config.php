@@ -6,7 +6,7 @@ function connection() {
     // admin 
     $mysql_admin = "a000b_16095898"; 
     // hasło 
-    $mysql_pass = "gamesamongus"; 
+    $mysql_pass = "*******"; 
     // nazwa baza 
     $mysql_db = "a000b_16095898_tgas"; 
     // nawiązujemy połączenie z serwerem MySQL 
